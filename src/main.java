@@ -5,7 +5,5 @@ public class main {
 
         Interfaces.Ventana V = new Interfaces.Ventana(P.getServer());
         V.setVisible(true);
-
-        //S.abrirPuerto();
     }
 }
