@@ -6,12 +6,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import java.util.List;
 
+/** Clase que se utiliza para la generacion de la ventana
+ * @author Marco Rodríguez
+ * @version 1.0
+ * @since  1.0
+ */
 public class Interfaces {
     public static class Ventana extends JFrame implements ActionListener, Runnable {
-        Map<String, java.util.List<String>> diccionario = new HashMap<>();
 
+        Map<String, java.util.List<String>> diccionario = new HashMap<>();
         private Clients.Conexiones S;
         private JButton boton;
         private JLabel texto;
@@ -27,13 +31,20 @@ public class Interfaces {
         private JTextField caja_nombre;
         private int puerto = 0;
 
-
+        /**
+         * Asigna el valor al puerto que la app está utilizando
+         * @param disponible Puerto utilizado
+         */
 
         public void setPuerto(int disponible) {
             this.puerto = disponible;
-            this.S = new Clients.Conexiones(puerto);
+            this.S = new Clients.Conexiones();
         }
 
+        /**
+         * Crea la ventana que la app utiliza
+         * @param disponible Puerto que la ventana está utilizando
+         */
         public Ventana(int disponible) {
             caracteristicasVentanas();
             setPuerto(disponible);
@@ -41,6 +52,9 @@ public class Interfaces {
             abrirVentana();
         }
 
+        /**
+         * Agrega a la ventana la información sobre el puerto que está utilizando
+         */
         public void mostrarPuerto() {
             this.port = new JLabel();
             this.port.setText("Tu puerto es el: " + puerto);
@@ -48,6 +62,9 @@ public class Interfaces {
             this.add(port);
         }
 
+        /**
+         * Caracterizticas principales de la ventana
+         */
         public void caracteristicasVentanas() {
             this.setTitle("Chat");
             this.setSize(700, 500);
@@ -56,6 +73,9 @@ public class Interfaces {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
+        /**
+         * Todos los witdgets de la ventana que se esta presentando, ademas de los eventos para que los mismos se actualicen
+         */
         public void abrirVentana() {
             texto = new JLabel();
             caja_texto = new JTextField();
@@ -104,13 +124,14 @@ public class Interfaces {
             this.add(caja_nombre);
             this.add(scroll_lista);
 
-            //mensajes.add("prueba");
-            //lista_mensajes.setListData(mensajes.toArray());
 
             Thread actualizar = new Thread(this);
             actualizar.start();
         }
 
+        /**
+         * Hilo que recibe cualquier dato que se le esté siendo enviando, y actualiza el chat
+         */
         @Override
         public void run() {
             try {
@@ -143,15 +164,22 @@ public class Interfaces {
             catch (IOException e) {
                 e.printStackTrace();
             }
+            catch (ArrayIndexOutOfBoundsException e1) {
+                System.out.println(e1.getMessage());
+                System.out.println("Mensaje vacio");
+                JOptionPane.showMessageDialog(null, "Trata de llenar todas las casillas.");
+            }
         }
 
+        /**
+         * Se encarga de actualizar el chat, además de acceder a un objeto de la clase Clients para que este envie el mensaje
+         * @param e Evento que se activa al presionar el botón de enviar
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 String msj = caja_texto.getText();
                 int destinatario = Integer.parseInt(caja_puerto.getText());
-                System.out.println(destinatario);
-                //chat.append("Tu: " + msj + "\n");
                 S.enviarMsj(msj, destinatario, caja_nombre.getText(), puerto);
                 if (diccionario.containsKey(String.valueOf(destinatario))) {
                     diccionario.get(String.valueOf(destinatario)).add("TU: " + msj);
@@ -171,6 +199,7 @@ public class Interfaces {
             }
             catch (NumberFormatException exception) {
                 System.out.println("Puerto desconocido");
+                JOptionPane.showMessageDialog(null, "Puerto desconocido");
             }
         }
 
