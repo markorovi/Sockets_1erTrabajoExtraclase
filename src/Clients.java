@@ -19,7 +19,7 @@ public class Clients {
             try{
                 socketUsado = new Socket("127.0.0.1", destinatario);
                 DataOutputStream datos = new DataOutputStream(socketUsado.getOutputStream());
-                datos.writeUTF(usuario + " [" + puerto + "]: " + msj);
+                datos.writeUTF(puerto + ";" + usuario + ";" + msj);
                 datos.close();
             }
             catch (UnknownHostException e1) {
