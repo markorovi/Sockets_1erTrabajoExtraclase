@@ -1,3 +1,5 @@
+package com.gmail.markorovi.exceptionhandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
