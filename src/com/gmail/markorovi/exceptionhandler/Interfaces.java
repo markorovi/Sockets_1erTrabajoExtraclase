@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.logging.Logger;
 
 /** Clase que se utiliza para la generacion de la ventana
  * @author Marco Rodríguez
@@ -16,6 +17,8 @@ import java.util.*;
  */
 public class Interfaces {
     public static class Ventana extends JFrame implements ActionListener, Runnable {
+
+        private static final Logger LOGGER = Logger.getLogger(Ventana.class.getName()); // Logger
 
         Map<String, java.util.List<String>> diccionario = new HashMap<>();
         private Clients.Conexiones S;
@@ -164,11 +167,10 @@ public class Interfaces {
                 }
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.warning("Hay problemas al intentar conectarse al puerto " + puerto + ". Mensaje de error: "+ e.getMessage());
             }
             catch (ArrayIndexOutOfBoundsException e1) {
-                System.out.println(e1.getMessage());
-                System.out.println("Mensaje vacio");
+                LOGGER.info("El mensaje que adjunto está vacío. Mensaje de error: " + e1.getMessage());
                 JOptionPane.showMessageDialog(null, "Trata de llenar todas las casillas.");
             }
         }

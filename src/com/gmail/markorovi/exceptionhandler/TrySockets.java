@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.*;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 /** Clase que verifica que el puerto para cada aplicación pueda ser abierto sin problemas
  * @author Marco Rodríguez
  * @version 1.0
@@ -53,7 +55,6 @@ public class TrySockets {
          * Método que se encarga de recorrer todos los puertos inciando por el 50000 hasta encontrar uno disponible.
          */
         public void estaDisponibleServerSocket() {
-            LOGGER.info("");
             while (escuchando == false) {
                 if (getServer() < 65535){
                     try {
@@ -61,12 +62,13 @@ public class TrySockets {
                         setEscuchando(true);
                     }
                     catch (IOException e) {
-                        LOGGER.warning("El puerto está ocupado ", e);
+                        LOGGER.info("El puerto está ocupado. Mensaje de error: " + e.getMessage());
                         setServer(getServer() + 1);
                     }
                 }
                 else{
-                    System.out.println("No hay puertos libres");
+                    LOGGER.warning("No se encontró ningún puerto disponible.");
+                    JOptionPane.showMessageDialog(null, "No se encontró ningún puerto disponible.");
                     break;
                 }
             }
