@@ -1,7 +1,9 @@
 package com.gmail.markorovi.exceptionhandler;
 
 import java.io.IOException;
+
 import java.net.*;
+import java.util.logging.Logger;
 
 /** Clase que verifica que el puerto para cada aplicación pueda ser abierto sin problemas
  * @author Marco Rodríguez
@@ -9,6 +11,9 @@ import java.net.*;
  * @since  1.0
  */
 public class TrySockets {
+
+    private static final Logger LOGGER = Logger.getLogger(TrySockets.class.getName());
+
     public static class Puertos extends main {
         private int server = 50000;
         private boolean escuchando = false;
@@ -48,6 +53,7 @@ public class TrySockets {
          * Método que se encarga de recorrer todos los puertos inciando por el 50000 hasta encontrar uno disponible.
          */
         public void estaDisponibleServerSocket() {
+            LOGGER.info("");
             while (escuchando == false) {
                 if (getServer() < 65535){
                     try {
@@ -55,6 +61,7 @@ public class TrySockets {
                         setEscuchando(true);
                     }
                     catch (IOException e) {
+                        LOGGER.warning("El puerto está ocupado ", e);
                         setServer(getServer() + 1);
                     }
                 }
