@@ -202,7 +202,7 @@ public class Interfaces {
                 lista_mensajes.clearSelection();
             }
             catch (NumberFormatException exception) {
-                System.out.println("Puerto desconocido");
+                LOGGER.warning("El puerto introducido no es válido. Mensaje de error:" + exception.getMessage());
                 JOptionPane.showMessageDialog(null, "Puerto desconocido");
             }
         }

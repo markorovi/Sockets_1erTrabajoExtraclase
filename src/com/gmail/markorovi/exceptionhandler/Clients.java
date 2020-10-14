@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
+import java.util.logging.Logger;
 
 /** Clase que se utiliza para el envio de datos a través de los sockets
  * @author Marco Rodríguez
@@ -14,6 +15,7 @@ public class Clients {
     public static class Conexiones extends main{
         Socket socketUsado;
 
+        
         /**
          * Método que se encarga de trabajar con los sockets para así enviar el mensaje
          * @param msj El mensaje a enviar
@@ -21,6 +23,9 @@ public class Clients {
          * @param usuario El nombre con el que el emisor del mensaje se identificó
          * @param puerto El puerto que corresponde a la dirección desde la cual se envía el mensaje
          */
+
+        Logger LOGGER = Logger.getLogger(Clients.class.getName());
+
         public void enviarMsj(String msj, int destinatario, String usuario, int puerto){
             try{
                 socketUsado = new Socket("127.0.0.1", destinatario);
@@ -28,13 +33,13 @@ public class Clients {
                 datos.writeUTF(puerto + ";" + usuario + ";" + msj);
                 datos.close();
             }
-            catch (UnknownHostException e1) {
-                e1.printStackTrace();
+            catch (IOException e) {
+                LOGGER.warning("El puerto de destino pertenece a un usuario que no se encuentra activo. Mensaje de error: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Has creado un chat con un usuario no activo.");
             }
-            catch (IOException e1) {
-                System.out.println(e1.getMessage());
-                System.out.println("Usuario no activo");
-                JOptionPane.showMessageDialog(null, "Haz creado un chat con un usuario no activo.");
+            catch (IllegalArgumentException exception) {
+                LOGGER.warning("Puerto introducido fuera del rango (0<puerto<65535). Mensaje de error: " + exception.getMessage());
+                JOptionPane.showMessageDialog(null, "Puerto introducido fuera del rango (0<puerto<65535).");
             }
         }
 
