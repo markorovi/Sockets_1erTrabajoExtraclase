@@ -1,30 +1,39 @@
 package com.gmail.markorovi.exceptionhandler;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 /** Clase que se utiliza para la generacion de la ventana
  * @author Marco Rodríguez
  * @version 1.0
  * @since  1.0
  */
-public class Interfaces {
-    public static class Ventana extends JFrame implements ActionListener, Runnable {
+public class Ventana extends JFrame implements ActionListener, Runnable {
 
-        private static final Logger LOGGER = Logger.getLogger(Ventana.class.getName()); // Logger
-        // private final LoggingHandler manejadorDeLog = new LoggingHandler();
-
+    private static final Logger LOGGER = Logger.getLogger(Ventana.class.getName());
 
         Map<String, java.util.List<String>> diccionario = new HashMap<>();
-        private Clients.Conexiones S;
+        private Conexiones S;
         private JButton boton;
         private JLabel texto;
         private JLabel texto_usuario;
@@ -44,16 +53,17 @@ public class Interfaces {
          * @param disponible Puerto utilizado
          */
 
-        public void setPuerto(int disponible) {
+        public void setPuerto(final int disponible) {
             this.puerto = disponible;
-            this.S = new Clients.Conexiones();
+            this.S = new Conexiones();
         }
 
         /**
          * Crea la ventana que la app utiliza
+         * 
          * @param disponible Puerto que la ventana está utilizando
          */
-        public Ventana(int disponible) {
+        public Ventana(final int disponible) {
             caracteristicasVentanas();
             setPuerto(disponible);
             mostrarPuerto();
@@ -82,7 +92,8 @@ public class Interfaces {
         }
 
         /**
-         * Todos los witdgets de la ventana que se esta presentando, ademas de los eventos para que los mismos se actualicen
+         * Todos los witdgets de la ventana que se esta presentando, ademas de los
+         * eventos para que los mismos se actualicen
          */
         public void abrirVentana() {
             texto = new JLabel();
@@ -117,7 +128,7 @@ public class Interfaces {
             lista_mensajes.addListSelectionListener(e -> {
                 chat.selectAll();
                 chat.replaceSelection("");
-                for (String str : diccionario.get(String.valueOf(lista_mensajes.getSelectedValue()))) {
+                for (final String str : diccionario.get(String.valueOf(lista_mensajes.getSelectedValue()))) {
                     chat.append(str + "\n");
                 }
             });
@@ -132,28 +143,27 @@ public class Interfaces {
             this.add(caja_nombre);
             this.add(scroll_lista);
 
-
-            Thread actualizar = new Thread(this);
+            final Thread actualizar = new Thread(this);
             actualizar.start();
         }
 
         /**
-         * Hilo que recibe cualquier dato que se le esté siendo enviando, y actualiza el chat
+         * Hilo que recibe cualquier dato que se le esté siendo enviando, y actualiza el
+         * chat
          */
         @Override
         public void run() {
             try {
-                ServerSocket listening = new ServerSocket(puerto);
-                while (true){
-                    Socket recibido = listening.accept();
-                    DataInputStream datosEntrada = new DataInputStream(recibido.getInputStream());
-                    String msj = datosEntrada.readUTF();
-                    String[] separacion = msj.split(";");
+                final ServerSocket listening = new ServerSocket(puerto);
+                while (true) {
+                    final Socket recibido = listening.accept();
+                    final DataInputStream datosEntrada = new DataInputStream(recibido.getInputStream());
+                    final String msj = datosEntrada.readUTF();
+                    final String[] separacion = msj.split(";");
                     if (diccionario.containsKey(separacion[0])) {
                         diccionario.get(separacion[0]).add(separacion[1] + ":" + separacion[2]);
-                    }
-                    else {
-                        java.util.List<String> historial_chat = new ArrayList<>();
+                    } else {
+                        final java.util.List<String> historial_chat = new ArrayList<>();
                         historial_chat.add(separacion[1] + ": " + separacion[2]);
                         diccionario.put(String.valueOf(separacion[0]), historial_chat);
 
@@ -162,53 +172,64 @@ public class Interfaces {
                     lista_mensajes.setListData(diccionario.keySet().toArray());
                     chat.selectAll();
                     chat.replaceSelection("");
-                    for (String str : diccionario.get(String.valueOf(separacion[0]))) {
+                    for (final String str : diccionario.get(String.valueOf(separacion[0]))) {
                         chat.append(str + "\n");
                     }
                     lista_mensajes.clearSelection();
                     recibido.close();
                 }
-            }
-            catch (IOException e) {
-                new LoggingHandler(LOGGER, "Hay problemas al intentar conectarse al puerto " + puerto + ". Mensaje de error: " + e.getMessage(), "warning");
+            } catch (final IOException e) {
+                // new LoggingHandler(LOGGER, "Hay problemas al intentar conectarse al puerto "
+                // + puerto + ". Mensaje de error: " + e.getMessage(), "warning");
+                final FileHandler fHandler = (new LoggingHandler().Handler(LOGGER));
+                LOGGER.warning("Hay problemas al intentar conectarse al puerto " + puerto + ". Mensaje de error: "
+                        + e.getMessage());
+                fHandler.close();
 
-            }
-            catch (ArrayIndexOutOfBoundsException e1) {
-                new LoggingHandler(LOGGER, "El mensaje que adjunto está vacío. Mensaje de error: " + e1.getMessage(), "info");
+            } catch (final ArrayIndexOutOfBoundsException e1) {
+                // new LoggingHandler(LOGGER, "El mensaje que adjunto está vacío. Mensaje de
+                // error: " + e1.getMessage(), "info");
+                final FileHandler fHandler = (new LoggingHandler().Handler(LOGGER));
+                LOGGER.info("El mensaje que adjunto está vacío. Mensaje de error: " + e1.getMessage());
+                fHandler.close();
             }
         }
 
         /**
-         * Se encarga de actualizar el chat, además de acceder a un objeto de la clase Clients para que este envie el mensaje
+         * Se encarga de actualizar el chat, además de acceder a un objeto de la clase
+         * Clients para que este envie el mensaje
+         * 
          * @param e Evento que se activa al presionar el botón de enviar
          */
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             try {
-                String msj = caja_texto.getText();
-                int destinatario = Integer.parseInt(caja_puerto.getText());
+                final String msj = caja_texto.getText();
+                final int destinatario = Integer.parseInt(caja_puerto.getText());
                 S.enviarMsj(msj, destinatario, caja_nombre.getText(), puerto);
                 if (diccionario.containsKey(String.valueOf(destinatario))) {
                     diccionario.get(String.valueOf(destinatario)).add("TU: " + msj);
-                }
-                else {
-                    java.util.List<String> historial_chat = new ArrayList<>();
+                } else {
+                    final java.util.List<String> historial_chat = new ArrayList<>();
                     historial_chat.add("TU: " + msj);
                     diccionario.put(String.valueOf(destinatario), historial_chat);
                 }
                 lista_mensajes.setListData(diccionario.keySet().toArray());
                 chat.selectAll();
                 chat.replaceSelection("");
-                for (String str : diccionario.get(String.valueOf(destinatario))) {
+                for (final String str : diccionario.get(String.valueOf(destinatario))) {
                     chat.append(str + "\n");
                 }
                 lista_mensajes.clearSelection();
-            }
-            catch (NumberFormatException exception) {
-                new LoggingHandler(LOGGER, "El puerto introducido no es válido. Mensaje de error:" + exception.getMessage(), "warning");
+            } catch (final NumberFormatException exception) {
+                // new LoggingHandler(LOGGER, "El puerto introducido no es válido. Mensaje de
+                // error:" + exception.getMessage(), "warning");
+                final FileHandler fHandler = (new LoggingHandler().Handler(LOGGER));
+                LOGGER.warning("El puerto introducido no es válido. Mensaje de error:" + exception.getMessage());
+                fHandler.close();
                 JOptionPane.showMessageDialog(null, "Puerto desconocido");
             }
         }
 
-    }
+
 }

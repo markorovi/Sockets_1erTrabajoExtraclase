@@ -7,36 +7,21 @@ import java.util.logging.SimpleFormatter;
 
 public class LoggingHandler {
 
-    private FileHandler manejadorDeArchivos;
-    private SimpleFormatter formateador;
-
-    public LoggingHandler(Logger LOGGER, String mensaje, String tipo) {
+    public FileHandler Handler(final Logger LOGGER) {
         try {
-            FileHandler manejadorDeArchivos = new FileHandler("logger.log", true);
+            final FileHandler manejadorDeArchivos = new FileHandler("logging.txt", true);
 
             LOGGER.addHandler(manejadorDeArchivos);
 
-            SimpleFormatter formateador = new SimpleFormatter();
+            final SimpleFormatter formateador = new SimpleFormatter();
 
             manejadorDeArchivos.setFormatter(formateador);
 
-            switch (tipo){
-                case "info": 
-                    LOGGER.info(mensaje);
-                    break;
-                    
-                case "warning": 
-                    LOGGER.warning(mensaje);
-                    break;
-    
-                default: LOGGER.info(mensaje);
-            }
-
-            manejadorDeArchivos.close();
+            return manejadorDeArchivos;
 
         } catch (SecurityException | IOException e) {
             e.printStackTrace();
-            return;
+            return null;
         }
     }
 }
