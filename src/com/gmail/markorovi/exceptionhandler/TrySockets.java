@@ -1,10 +1,9 @@
 package com.gmail.markorovi.exceptionhandler;
 
 import java.io.IOException;
-
-import java.net.*;
+import java.net.ServerSocket;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
 
 /** Clase que verifica que el puerto para cada aplicación pueda ser abierto sin problemas
@@ -24,12 +23,13 @@ public class TrySockets {
          * Asigna el valor del ServerSocket a utilizar
          * @param port Puerto del ServerSocket
          */
-        public void setServer(int port) {
+        public void setServer(final int port) {
             this.server = port;
         }
 
         /**
          * Obtiene el ServerSocket actual
+         * 
          * @return Número de puerto
          */
         public int getServer() {
@@ -38,9 +38,10 @@ public class TrySockets {
 
         /**
          * Asigna un valor booleano para así saber si el puerto esta a la escucha
+         * 
          * @param flag Valor booleano correspondiente a la disponibilidad del puerto
          */
-        public void setEscuchando(boolean flag) {
+        public void setEscuchando(final boolean flag) {
             this.escuchando = flag;
         }
 
@@ -52,23 +53,25 @@ public class TrySockets {
         }
 
         /**
-         * Método que se encarga de recorrer todos los puertos inciando por el 50000 hasta encontrar uno disponible.
+         * Método que se encarga de recorrer todos los puertos inciando por el 50000
+         * hasta encontrar uno disponible.
          */
         public void estaDisponibleServerSocket() {
             while (escuchando == false) {
-                if (getServer() < 65535){
+                if (getServer() < 65535) {
                     try {
                         new ServerSocket(server).close();
                         setEscuchando(true);
-                    }
-                    catch (IOException e) {
-                        
-                        new LoggingHandler(LOGGER, "El puerto está ocupado. Mensaje de error: " + e.getMessage(), "info");
+                    } catch (final IOException e) {
+                        final FileHandler fHandler = (new LoggingHandler().Handler(LOGGER));
+                        LOGGER.info("El puerto " + getServer() + "está ocupado, intentando con siguiente.");
+                        fHandler.close();
                         setServer(getServer() + 1);
                     }
-                }
-                else{
-                    new LoggingHandler(LOGGER, "No se encontró ningún puerto disponible.", "warning");
+                } else {
+                    final FileHandler fHandler = (new LoggingHandler().Handler(LOGGER));
+                    LOGGER.warning("No se encontró ningún puerto disponible.");
+                    fHandler.close();
                     JOptionPane.showMessageDialog(null, "No se encontró ningún puerto disponible.");
                     break;
                 }

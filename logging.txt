@@ -1,0 +1,32 @@
+oct. 14, 2020 10:47:09 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50000está ocupado, intentando con siguiente.
+oct. 14, 2020 10:47:09 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50001está ocupado, intentando con siguiente.
+oct. 14, 2020 10:47:19 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50000está ocupado, intentando con siguiente.
+oct. 14, 2020 10:47:19 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50001está ocupado, intentando con siguiente.
+oct. 14, 2020 10:47:19 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50002está ocupado, intentando con siguiente.
+oct. 14, 2020 10:47:52 P. M. com.gmail.markorovi.exceptionhandler.Clients$Conexiones enviarMsj
+INFO: El puerto de destino pertenece a un usuario que no se encuentra activo. Mensaje de error: Connection refused: connect
+oct. 14, 2020 10:48:05 P. M. com.gmail.markorovi.exceptionhandler.Clients$Conexiones enviarMsj
+INFO: El puerto de destino pertenece a un usuario que no se encuentra activo. Mensaje de error: Connection refused: connect
+oct. 14, 2020 10:51:43 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50000está ocupado, intentando con siguiente.
+oct. 14, 2020 10:51:43 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50001está ocupado, intentando con siguiente.
+oct. 14, 2020 10:51:43 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50002está ocupado, intentando con siguiente.
+oct. 14, 2020 10:51:43 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50003está ocupado, intentando con siguiente.
+oct. 14, 2020 10:55:03 P. M. com.gmail.markorovi.exceptionhandler.Ventana actionPerformed
+WARNING: El puerto introducido no es válido. Mensaje de error:For input string: "asd"
+oct. 14, 2020 10:55:40 P. M. com.gmail.markorovi.exceptionhandler.Conexiones enviarMsj
+INFO: El puerto de destino pertenece a un usuario que no se encuentra activo. Mensaje de error: Connection refused: connect
+oct. 14, 2020 10:56:11 P. M. com.gmail.markorovi.exceptionhandler.Conexiones enviarMsj
+INFO: El puerto de destino pertenece a un usuario que no se encuentra activo. Mensaje de error: Connection refused: connect
+oct. 14, 2020 10:57:22 P. M. com.gmail.markorovi.exceptionhandler.TrySockets$Puertos estaDisponibleServerSocket
+INFO: El puerto 50000está ocupado, intentando con siguiente.
+oct. 14, 2020 10:58:28 P. M. com.gmail.markorovi.exceptionhandler.Conexiones enviarMsj
+WARNING: Puerto introducido fuera del rango (0<puerto<65535). Mensaje de error: port out of range:500000
