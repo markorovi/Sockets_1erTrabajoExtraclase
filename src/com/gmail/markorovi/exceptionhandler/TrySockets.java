@@ -62,12 +62,13 @@ public class TrySockets {
                         setEscuchando(true);
                     }
                     catch (IOException e) {
-                        LOGGER.info("El puerto está ocupado. Mensaje de error: " + e.getMessage());
+                        
+                        new LoggingHandler(LOGGER, "El puerto está ocupado. Mensaje de error: " + e.getMessage(), "info");
                         setServer(getServer() + 1);
                     }
                 }
                 else{
-                    LOGGER.warning("No se encontró ningún puerto disponible.");
+                    new LoggingHandler(LOGGER, "No se encontró ningún puerto disponible.", "warning");
                     JOptionPane.showMessageDialog(null, "No se encontró ningún puerto disponible.");
                     break;
                 }

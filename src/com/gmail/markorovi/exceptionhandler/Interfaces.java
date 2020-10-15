@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 /** Clase que se utiliza para la generacion de la ventana
@@ -19,6 +20,8 @@ public class Interfaces {
     public static class Ventana extends JFrame implements ActionListener, Runnable {
 
         private static final Logger LOGGER = Logger.getLogger(Ventana.class.getName()); // Logger
+        // private final LoggingHandler manejadorDeLog = new LoggingHandler();
+
 
         Map<String, java.util.List<String>> diccionario = new HashMap<>();
         private Clients.Conexiones S;
@@ -167,11 +170,11 @@ public class Interfaces {
                 }
             }
             catch (IOException e) {
-                LOGGER.warning("Hay problemas al intentar conectarse al puerto " + puerto + ". Mensaje de error: "+ e.getMessage());
+                new LoggingHandler(LOGGER, "Hay problemas al intentar conectarse al puerto " + puerto + ". Mensaje de error: " + e.getMessage(), "warning");
+
             }
             catch (ArrayIndexOutOfBoundsException e1) {
-                LOGGER.info("El mensaje que adjunto está vacío. Mensaje de error: " + e1.getMessage());
-                JOptionPane.showMessageDialog(null, "Trata de llenar todas las casillas.");
+                new LoggingHandler(LOGGER, "El mensaje que adjunto está vacío. Mensaje de error: " + e1.getMessage(), "info");
             }
         }
 
@@ -202,7 +205,7 @@ public class Interfaces {
                 lista_mensajes.clearSelection();
             }
             catch (NumberFormatException exception) {
-                LOGGER.warning("El puerto introducido no es válido. Mensaje de error:" + exception.getMessage());
+                new LoggingHandler(LOGGER, "El puerto introducido no es válido. Mensaje de error:" + exception.getMessage(), "warning");
                 JOptionPane.showMessageDialog(null, "Puerto desconocido");
             }
         }
